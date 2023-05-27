@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     console.log(body);
     //req.json
     //let source_code = req.body.source_code;
-    let response = await fetch("http://localhost:2000/api/v2/execute",{
+    let response = await fetch(`${process.env.PISTON_URL}/api/v2/execute`,{
         next: { revalidate: 0 },
         method: "POST",
         headers: {

@@ -1,0 +1,38 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    ports:
+      - "80:80"
+      - "443:443"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      
+  judge:
+    build: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PISTON_URL=http://piston:2000
+      - NEXTAUTH_URL=http://judge.localhost
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.judge.rule=Host(`judge.localhost`)"
+      - "traefik.http.routers.judge.entrypoints=web"
+
+  piston:
+    build: ghcr.io/engineer-man/piston
+    restart: always
+    volumes:
+        - ./piston/packages:/piston/packages
+    tmpfs:
+        - /piston/jobs:exec,uid=1000,gid=1000,mode=711
+        - /tmp:exec
+    environment:
+    #    - PISTON_DISABLE_NETWORKING=true
+        - PISTON_LOG_LEVEL=DEBUG
