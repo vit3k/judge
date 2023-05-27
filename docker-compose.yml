@@ -26,7 +26,7 @@ services:
       - "traefik.http.routers.judge.entrypoints=web"
 
   piston:
-    build: ghcr.io/engineer-man/piston
+    image: ghcr.io/engineer-man/piston
     restart: always
     volumes:
         - ./piston/packages:/piston/packages
