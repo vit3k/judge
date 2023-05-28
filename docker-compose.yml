@@ -10,20 +10,26 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=pawitkowski@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      
+      - "./letsencrypt:/letsencrypt"
+
   judge:
     build: frontend
-    ports:
-      - "3000:3000"
     environment:
       - PISTON_URL=http://piston:2000
-      - NEXTAUTH_URL=http://judge.localhost
+      - NEXTAUTH_URL=http://judge.witek.ovh
+      - NEXTAUTH_SECRET=vuqhdwXviFR5Tp8Cvr7OVa/eCAkx25C/CSJRuDVmjsY=
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.judge.rule=Host(`judge.localhost`)"
-      - "traefik.http.routers.judge.entrypoints=web"
+      - "traefik.http.routers.judge.rule=Host(`judge.witek.ovh`)"
+      - "traefik.http.routers.judge.entrypoints=websecure"
+      - "traefik.http.routers.judge.tls.certresolver=myresolver"
 
   piston:
     image: ghcr.io/engineer-man/piston
@@ -36,3 +42,5 @@ services:
     environment:
     #    - PISTON_DISABLE_NETWORKING=true
         - PISTON_LOG_LEVEL=DEBUG
+
+        

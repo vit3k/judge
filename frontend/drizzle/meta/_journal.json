@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1685209764529,
+      "tag": "0000_fantastic_captain_flint",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1685211661023,
+      "tag": "0001_condemned_wendell_vaughn",
+      "breakpoints": false
+    }
+  ]
+}
