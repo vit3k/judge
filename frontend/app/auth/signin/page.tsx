@@ -9,7 +9,7 @@ function getCsrfToken(): string {
 
     if (cookie) {
         let cookieParts = cookie.split("|");
-        if (cookieParts.length > 1)
+        if (cookieParts.length > 0)
             return cookieParts[0];
     }
     return "";
