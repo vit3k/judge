@@ -1,11 +1,11 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import {users, db } from "../../../../db/schema";
+import {users } from "../../../../db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
+import db from "@/db/db";
 
 export const authOptions: AuthOptions = {
-    debug: true,
     providers: [
         CredentialsProvider({
             credentials: {

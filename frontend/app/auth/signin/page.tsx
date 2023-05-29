@@ -1,4 +1,4 @@
-import { headers, cookies } from 'next/headers';
+import { cookies } from 'next/headers';
 
 // workaround for https://github.com/nextauthjs/next-auth/discussions/7256
 function getCsrfToken(): string {
@@ -13,18 +13,6 @@ function getCsrfToken(): string {
             return cookieParts[0];
     }
     return "";
-    /*let cookie = headers().get("cookie") ?? "";
-    console.log('Cookie', cookie);
-    const options: RequestInit = {
-        headers: {
-          "Content-Type": "application/json",
-          cookie
-        },
-      }
-      
-      const res = await fetch(`${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/api/auth/csrf`, options)
-      const data = await res.json();
-      return data?.csrfToken;*/
 }
 
 export default async function LoginPage({
@@ -35,7 +23,6 @@ export default async function LoginPage({
     searchParams?: { [key: string]: string | string[] | undefined };
   }) {
     let csrfToken = getCsrfToken();
-    //console.log(searchParams.errox);
     let error = false;
     if (searchParams && searchParams.error) {
         error = true;

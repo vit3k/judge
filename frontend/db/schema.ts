@@ -1,9 +1,5 @@
-import { InferModel } from 'drizzle-orm';
-import { pgEnum, pgTable, serial, text, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { drizzle, PostgresJsDatabase } from 'drizzle-orm/postgres-js';
-//import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
+import { InferModel, relations } from 'drizzle-orm';
+import { integer, pgEnum, pgTable, serial, text, uniqueIndex, varchar, foreignKey } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
@@ -15,8 +11,36 @@ export const users = pgTable('users', {
 export type User = InferModel<typeof users>; // return type when queried
 export type NewUser = InferModel<typeof users, 'insert'>; // insert type
 
-const queryClient = postgres(process.env.DATABASE_URL || "postgres://postgres:adminadmin@0.0.0.0:5432/db");
-export const db: PostgresJsDatabase = drizzle(queryClient);
 
-//migrate(db, { migrationsFolder: "drizzle" });
+
+export const tasks = pgTable('tasks', {
+  id: serial('id').primaryKey(),
+  name: varchar('name').notNull(),
+  input: varchar('input').notNull(),
+  expectedOutput: varchar('expectedOutput').notNull()
+});
+
+export const tasksRelations = relations(tasks, ({ many }) => ({
+	testcases: many(testcases),
+}));
+
+export type Task = InferModel<typeof tasks>;
+
+export const testcases = pgTable('testcase', {
+  id: serial('id').primaryKey(),
+  taskId: integer('taskId').references(() => tasks.id),
+  input: varchar('input'),
+  expected: varchar('expected')
+});
+
+export const testcasesRelations = relations(testcases, ({ one }) => ({
+	task: one(tasks, {
+		fields: [testcases.taskId],
+		references: [tasks.id],
+	}),
+}));
+
+export type Testcase = InferModel<typeof testcases>;
+
+
 
