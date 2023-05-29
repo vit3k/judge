@@ -1,17 +1,18 @@
 import { Testcase } from "@/db/schema"
 
-export enum TestcaseStatus {
+export enum Status {
     OK,
     NOT_OK
 }
 export interface Result {
     testcase: Testcase,
     output: string,
-    status: TestcaseStatus
+    status: Status
 }
 
 export interface ExecuteResult
 {
-  status: string,
+  status: Status,
+  error: string,
   results: Result[]
 }

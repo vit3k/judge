@@ -12,11 +12,13 @@ export const metadata = {
 export default async function RootLayout({ children, }: { children: React.ReactNode }) {
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="pl">
+      <body className={`${inter.className} h-screen`}>
         <Provider>
-          <Header />
-          {children}
+          <div className='flex flex-col h-full'>
+            <Header />
+            {children}
+          </div>
         </Provider>
       </body>
     </html>
