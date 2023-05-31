@@ -15,8 +15,9 @@ const authOptions: AuthOptions = {
             async authorize(credentials, req) {
                 try {
                     if (!credentials) return null;
-                    
+                    console.log(credentials);
                     let result = await db.select().from(users).where(eq(users.email, credentials.username));
+                    console.log(result);
                     if (result.length === 0) return null;
                     let authResult = await bcrypt.compare(credentials.password, result[0].password);
                     if  (authResult) {

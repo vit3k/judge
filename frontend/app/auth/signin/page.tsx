@@ -1,11 +1,17 @@
 import { cookies } from 'next/headers';
 
+export const dynamic = 'force-dynamic';
+
 // workaround for https://github.com/nextauthjs/next-auth/discussions/7256
 function getCsrfToken(): string {
-    if(!cookies().has("next-auth.csrf-token"))
-        return "";
-
-    let cookie = cookies().get("next-auth.csrf-token")?.value;
+    let cookieName = '__Host-next-auth.csrf-token';
+    if(!cookies().has(cookieName)) {
+        cookieName = 'next-auth.csrf-token';
+        if(!cookies().has(cookieName))
+            return "";
+    }
+    console.log(cookieName);
+    let cookie = cookies().get(cookieName)?.value;
 
     if (cookie) {
         let cookieParts = cookie.split("|");
@@ -21,6 +27,7 @@ export default async function LoginPage({
     searchParams?: { [key: string]: string | string[] | undefined };
   }) {
     let csrfToken = getCsrfToken();
+    console.log(csrfToken);
     let error = false;
     if (searchParams && searchParams.error) {
         error = true;

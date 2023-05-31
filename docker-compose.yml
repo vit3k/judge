@@ -29,7 +29,8 @@ services:
       - NEXTAUTH_URL=${NEXTAUTH_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - DATABASE_URL=${DATABASE_URL}
-    
+    ports:
+      - 3000:3000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.judge.rule=Host(`judge.witek.ovh`)"
