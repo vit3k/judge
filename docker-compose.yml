@@ -23,8 +23,8 @@ services:
     build: frontend
     environment:
       - PISTON_URL=http://piston:2000
-      - NEXTAUTH_URL=http://judge.witek.ovh
-      - NEXTAUTH_SECRET=vuqhdwXviFR5Tp8Cvr7OVa/eCAkx25C/CSJRuDVmjsY=
+    env_file:
+      - .env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.judge.rule=Host(`judge.witek.ovh`)"

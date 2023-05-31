@@ -1,5 +1,5 @@
 import { tasks } from "@/db/schema";
-import CodeRunner from "./components/codeRunner/CodeRunner";
+import CodeRunner from "../components/codeRunner/CodeRunner";
 import db from "@/db/db";
 
 export default async function Home() {

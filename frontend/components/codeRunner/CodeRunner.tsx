@@ -65,10 +65,10 @@ export default function CodeRunner({tasks}: CodeRunnerProps) {
           <TasksDropDown tasks={tasks} selected={currentTaskIdx} onTaskChanged={onTaskChanged}/>
         </div>
       </div>
-      <div className='flex-1'>
+      <div className='flex-[2_1_0%]'>
         <Editor className="" loading={<div className="font-semibold text-white">Loading...</div>} options={{ padding: { top: 10 }, automaticLayout: true }} theme="vs-dark" onMount={handleEditorDidMount} defaultLanguage="python" defaultValue="print(input())" />
       </div>
-      <div className="pl-8 pt-4 flex-auto">
+      <div className="pl-8 pt-4 flex-[1_1_0%]">
         {!isExecuting ? <Output result={executeResult}/> : <LoadingCircle/>}
       </div>
     </div>

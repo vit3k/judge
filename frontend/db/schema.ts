@@ -1,5 +1,5 @@
 import { InferModel, relations } from 'drizzle-orm';
-import { integer, pgEnum, pgTable, serial, text, uniqueIndex, varchar, foreignKey } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, text, varchar } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
@@ -11,13 +11,10 @@ export const users = pgTable('users', {
 export type User = InferModel<typeof users>; // return type when queried
 export type NewUser = InferModel<typeof users, 'insert'>; // insert type
 
-
-
 export const tasks = pgTable('tasks', {
   id: serial('id').primaryKey(),
   name: varchar('name').notNull(),
-  input: varchar('input').notNull(),
-  expectedOutput: varchar('expectedOutput').notNull()
+  description: text('description')
 });
 
 export const tasksRelations = relations(tasks, ({ many }) => ({
