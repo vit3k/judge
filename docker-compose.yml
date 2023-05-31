@@ -20,11 +20,16 @@ services:
       - "./letsencrypt:/letsencrypt"
 
   judge:
-    build: frontend
+    build: 
+      context: frontend
+      args:
+        - DATABASE_URL=${DATABASE_URL}
     environment:
       - PISTON_URL=http://piston:2000
-    env_file:
-      - .env
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+    
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.judge.rule=Host(`judge.witek.ovh`)"

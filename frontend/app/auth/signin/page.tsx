@@ -16,10 +16,8 @@ function getCsrfToken(): string {
 }
 
 export default async function LoginPage({
-    params,
     searchParams,
   }: {
-    params: { slug: string };
     searchParams?: { [key: string]: string | string[] | undefined };
   }) {
     let csrfToken = getCsrfToken();
