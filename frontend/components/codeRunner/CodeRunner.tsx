@@ -4,7 +4,6 @@ import Editor from '@monaco-editor/react';
 import { useRef, useState } from 'react';
 import LoadingCircle from '../LoadingCircle';
 import PlayButton from './PlayButton';
-import TasksDropDown from './TasksDropDown';
 import { Task } from '@/db/schema';
 import { ExecuteResult, Status } from '@/dtos/execute';
 import Output from './Output';
@@ -19,20 +18,15 @@ async function executeCode(sourceCode: string, taskId: number): Promise<ExecuteR
 }
 
 interface CodeRunnerProps{
-  tasks: Task[]
+  currentTask: Task
 }
-export default function CodeRunner({tasks}: CodeRunnerProps) {
+export default function CodeRunner({currentTask}: CodeRunnerProps) {
   const editorRef = useRef<any>(null);
   const [executeResult, setExecuteResult] = useState<ExecuteResult | null>(null);
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
-  const [currentTaskIdx, setCurrentTaskIdx] = useState(0);
 
   function handleEditorDidMount(editor: any, _monaco: any) {
     editorRef.current = editor;
-  }
-
-  function onTaskChanged(idx: number) {
-    setCurrentTaskIdx(idx);
   }
 
   async function execute() {
@@ -41,7 +35,7 @@ export default function CodeRunner({tasks}: CodeRunnerProps) {
       if (!editorRef.current)
         return;
       let sourceCode = editorRef.current.getValue();
-      let result = await executeCode(sourceCode, tasks[currentTaskIdx].id);
+      let result = await executeCode(sourceCode, currentTask.id);
       setExecuteResult(result);
     } catch (error: any) {
       setExecuteResult({
@@ -56,19 +50,14 @@ export default function CodeRunner({tasks}: CodeRunnerProps) {
   }
 
   return (
-    <div className="flex-auto flex flex-col bg-gray-700">
-      <div className="h-10 p-1 pl-6 flex items-center bg-gray-700">
-        <div className="w-8 h-8">
-          {!isExecuting ? <PlayButton onClick={execute}/> : <LoadingCircle/> }
-        </div>
-        <div className="ml-2 w-64 z-10">
-          <TasksDropDown tasks={tasks} selected={currentTaskIdx} onTaskChanged={onTaskChanged}/>
-        </div>
+    <div className="flex flex-col bg-gray-700 h-full">
+      <div className="pt-2 h-12">
+        {!isExecuting ? <PlayButton onClick={execute} /> : <LoadingCircle/>}
       </div>
       <div className='flex-[2_1_0%]'>
         <Editor className="" loading={<div className="font-semibold text-white">Loading...</div>} options={{ padding: { top: 10 }, automaticLayout: true }} theme="vs-dark" onMount={handleEditorDidMount} defaultLanguage="python" defaultValue="print(input())" />
       </div>
-      <div className="pl-8 pt-4 flex-[1_1_0%]">
+      <div className="pt-4 flex-[1_1_0%]">
         {!isExecuting ? <Output result={executeResult}/> : <LoadingCircle/>}
       </div>
     </div>

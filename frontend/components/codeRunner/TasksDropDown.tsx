@@ -3,24 +3,22 @@
 import { Task } from '@/db/schema';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 
 interface TaskDropDownProps {
     tasks: Task[]
-    selected: number,
-    onTaskChanged: (idx: number) => void
+    currentTask: Task
 }
-export default function TasksDropDown({tasks, selected, onTaskChanged}: TaskDropDownProps) {
-    //const [currentSelection, setCurrentSelection] = useState(initialSelection);
-    
+export default function TasksDropDown({tasks, currentTask}: TaskDropDownProps) {
+    const router = useRouter();
     const select = (idx: number) => {
-        //setCurrentSelection(idx);
-        onTaskChanged(idx);
+        router.push(`/${tasks[idx].id}`)
     }
     return <Menu as="div" className="relative inline-block text-left w-full">
                 <div>
                     <Menu.Button className="inline-flex w-full justify-between rounded-md bg-black bg-opacity-20 px-4 py-1 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                        {tasks[selected]?.name}
+                        {currentTask.name}
                         <ChevronDownIcon
                             className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
                             aria-hidden="true"

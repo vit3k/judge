@@ -6,8 +6,11 @@ import db from "@/db/db";
 import { AuthOptions } from "next-auth";
 
 const authOptions: AuthOptions = {
+    debug: true,
     providers: [
         CredentialsProvider({
+            id: 'credentials',
+            name: 'Credentials',
             credentials: {
               username: { label: "E-mail", type: "text"},
               password: { label: "Password", type: "password" }

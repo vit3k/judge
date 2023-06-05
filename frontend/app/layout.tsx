@@ -13,9 +13,9 @@ export default async function RootLayout({ children, }: { children: React.ReactN
 
   return (
     <html lang="pl">
-      <body className={`${inter.className} h-screen`}>
+      <body className={`${inter.className} h-screen text-white bg-gray-700`}>
         <Provider>
-          <div className='flex flex-col h-full'>
+          <div className='h-full'>
             <Header />
             {children}
           </div>
