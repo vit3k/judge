@@ -1,10 +1,9 @@
 import CodeRunner from "@/components/codeRunner/CodeRunner";
+import TaskDescription from '@/components/codeRunner/TaskDescription';
 import db from "@/db/db";
 import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { notFound, useParams } from "next/navigation";
-import TaskDescription from "@/components/codeRunner/TaskDescription";
-import TaskContainer from "@/components/codeRunner/TaskContainer";
+import { notFound } from "next/navigation";
 
 interface TaskProps {
     params: {
@@ -17,6 +16,11 @@ export default async function TaskPage({params}: TaskProps) {
     if (!task) {
         notFound()
     }
-    {/* @ts-expect-error Server Component */}
-    return <TaskContainer task={task}/>
+    return (
+        <div className="flex flex-row justify-between bg-gray-700 h-full">
+            {/* @ts-expect-error Server Component */}
+            <div className='flex-[1_0_0%]'><TaskDescription task={task}/></div>
+            <div className='flex-[1.5_0_0%]'><CodeRunner currentTask={task}/></div>
+        </div>
+    )
 }
