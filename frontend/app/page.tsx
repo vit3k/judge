@@ -1,10 +1,6 @@
-import { tasks } from "@/db/schema";
-import CodeRunner from "../components/codeRunner/CodeRunner";
 import db from "@/db/db";
-import TaskList from "@/components/TaskList";
-import { notFound, redirect, useParams } from "next/navigation";
-import TaskContainer from "@/components/codeRunner/TaskContainer";
-import { eq } from "drizzle-orm";
+import { tasks } from "@/db/schema";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   let taskList = await db.select().from(tasks).orderBy(tasks.id);  
