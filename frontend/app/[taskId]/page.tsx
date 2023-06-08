@@ -5,6 +5,8 @@ import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
+export const revalidate = 60;
+
 interface TaskProps {
     params: {
         taskId: number

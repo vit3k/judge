@@ -2,6 +2,8 @@ import db from "@/db/db";
 import { tasks } from "@/db/schema";
 import { redirect } from "next/navigation";
 
+export const revalidate = 60;
+
 export default async function Home() {
   let taskList = await db.select().from(tasks).orderBy(tasks.id);  
   if (taskList.length > 0)
