@@ -23,10 +23,10 @@ export default function LoginPage() {
                     rounded-t border-0 shadow-md p-10 bg-white
                     shadow-gray-500/50 gap-6">
                 <h1 className="text-lg text-gray-700 font-semibold">Logowanie</h1>
-                <input type="text" placeholder="E-mail"
+                <input type="text" placeholder="Nazwa uzytkownika"
                     className="border-[1px] border-gray-100 rounded-lg px-6 py-2 text-gray-500"
                     {...register("username", { required: true })}/>
-                <input {...register("password", { required: true })}  type="password" placeholder="Password"
+                <input {...register("password", { required: true })}  type="password" placeholder="Hasło"
                     className="border-[1px] border-gray-100 rounded-lg px-6 py-2 text-gray-500"/>
                 <button type="submit"
                      className="border-[1px] border-gray-100 rounded-md px-4 py-2
