@@ -17,3 +17,5 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag judge:latest
       working-directory: frontend
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
