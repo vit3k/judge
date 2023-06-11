@@ -14,8 +14,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag judge:latest --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}"
-      working-directory: frontend
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2    
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/vit3k/judge
+        tags: type=sha
+    - name: Login to GHCR
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build container
+      uses: docker/build-push-action@v4
+      with:
+        context: frontend
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}   
+        build-args:
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+
