@@ -2,7 +2,7 @@ import db from "@/db/db";
 import { tasks } from "@/db/schema";
 import { redirect } from "next/navigation";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   let taskList = await db.select().from(tasks).orderBy(tasks.id);  

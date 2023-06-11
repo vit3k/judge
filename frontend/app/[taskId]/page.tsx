@@ -5,7 +5,7 @@ import { tasks } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 interface TaskProps {
     params: {
