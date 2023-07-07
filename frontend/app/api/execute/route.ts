@@ -46,17 +46,20 @@ export async function POST(req: Request) {
       }
 
       if (data.run.signal !== null) {
-        //return NextResponse.json({status: Status.NOT_OK, error: data.run.signal, results: []});
         results.push({
           status: Status.NOT_OK,
           testcase,
           output: 'Przekroczenie czasu wykonywania'
         })
       } else {
+        const re = new RegExp(testcase.expected ?? '', 'g');
+        let output: string = data.run.output;
+        let matches = output.match(re);
+        let status = matches?.length === 1 && matches[0] === output ? Status.OK : Status.NOT_OK;
         results.push({
           testcase,
           output: data.run.output,
-          status: testcase.expected?.trim() === data.run.output.trim() ? Status.OK : Status.NOT_OK
+          status
         })
       }
     }
