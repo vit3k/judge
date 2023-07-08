@@ -1,6 +1,7 @@
 services:
   traefik:
     image: traefik:v2.10
+    restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -20,17 +21,13 @@ services:
       - "./letsencrypt:/letsencrypt"
 
   judge:
-    build: 
-      context: frontend
-      args:
-        - DATABASE_URL=${DATABASE_URL}
+    image: ghcr.io/vit3k/judge:sha-aef20bd
+    restart: always
     environment:
       - PISTON_URL=http://piston:2000
       - NEXTAUTH_URL=${NEXTAUTH_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - DATABASE_URL=${DATABASE_URL}
-    ports:
-      - 3000:3000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.judge.rule=Host(`judge.witek.ovh`)"
@@ -38,15 +35,13 @@ services:
       - "traefik.http.routers.judge.tls.certresolver=myresolver"
 
   piston:
-    image: ghcr.io/engineer-man/piston
+    image: ghcr.io/vit3k/piston-python:sha-1c5ceed
     restart: always
-    volumes:
-        - ./piston/packages:/piston/packages
+    #volumes:
+    #    - ./piston/packages:/piston/packages
     tmpfs:
         - /piston/jobs:exec,uid=1000,gid=1000,mode=711
         - /tmp:exec
     environment:
     #    - PISTON_DISABLE_NETWORKING=true
         - PISTON_LOG_LEVEL=DEBUG
-
-        
